@@ -17,7 +17,7 @@ void menu()
     if(choice == 0)
         exit(0);
     else if(choice == 1)
-        clock();
+        digitalClock();
     else if(choice == 2)
         alarm();
     else if(choice == 3)
@@ -31,7 +31,7 @@ void menu()
     }
 }
 
-void clock() // Name of Engineer developing this feature
+void digitalClock() // Name of Engineer developing this feature
 {
     // Please start writing your code here and please write comments so that others can understand what has been done
     // Feel free to make your own functions to support the functionality of your code
