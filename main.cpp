@@ -31,6 +31,30 @@ void menu()
     }
 }
 
+void clock() // Name of Engineer developing this feature
+{
+    // Please start writing your code here and please write comments so that others can understand what has been done
+    // Feel free to make your own functions to support the functionality of your code
+}
+
+void alarm() // Name of Engineer developing this feature
+{
+    // Please start writing your code here and please write comments so that others can understand what has been done
+    // Feel free to make your own functions to support the functionality of your code
+}
+
+void timer() // Name of Engineer developing this feature
+{
+    // Please start writing your code here and please write comments so that others can understand what has been done
+    // Feel free to make your own functions to support the functionality of your code
+}
+
+void stopwatch() // Name of Engineer developing this feature
+{
+    // Please start writing your code here and please write comments so that others can understand what has been done 
+    // Feel free to make your own functions to support the functionality of your code
+}
+
 int main()
 {
     menu();
