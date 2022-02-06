@@ -8,6 +8,11 @@ void digitalClock();
 void timer();
 void stopwatch();
 
+// functions to make the features work
+void epoch_convertor(time_t);
+
+
+
 void menu()
 {
     menuDriver:
@@ -69,19 +74,37 @@ void stopwatch() // Name of Engineer developing this feature
          << "\t\t'l' for lap" << endl
          << "\t\t'r' for reset" << endl;
 
-    int lapCount = 1;
-    
+    int lapCount = 0;
+
+    time_t start, lap, laptime, lapPrev = 0;
+    tm *accessor; //used to access the time_t type variable and 
+// directly convert int or double types into respective time formats
 
     char button = getch();
     while(button) // #include<conio.h>
     {
         if(button == 's')
-        {
-        }
+            start = time(NULL);
+
         else if(button == 'l')
         {
-            cout << "Lap " << lapCount << ": " <<  << endl;
+            lap = time(NULL);
+
+            laptime = lap - start;
+
             lapCount++;
+            cout << "Lap " << lapCount << " -> ";
+            epoch_convertor(laptime);
+
+            if(lapPrev != 0)
+            {
+                cout << "\t Time between previous Lap -> ";
+                epoch_convertor(lapPrev);
+            }
+            else
+                cout << endl;
+
+            lapPrev = lap - start;
         }
 
         else if(button == 'r')
@@ -95,4 +118,21 @@ int main()
 {
     menu();
     return 0;
+}
+
+void epoch_convertor(time_t timeX)
+{
+    int dd, hh, mm, ss;
+
+    ss = timeX % 60;
+
+    if(timeX>=60)
+        mm = timeX / 60;
+    if(timeX >= 3600)
+        hh = timeX / 3600;
+    if(timeX >= 86400)
+        dd = timeX / 86400;
+
+    cout << dd<<':'<<hh<<':'<<mm<<':'<<ss << endl;
+    return;
 }
