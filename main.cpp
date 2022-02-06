@@ -99,7 +99,8 @@ void stopwatch() // Name of Engineer developing this feature
             if(lapPrev != 0)
             {
                 cout << "\t Time between previous Lap -> ";
-                epoch_convertor(lapPrev);
+                epoch_convertor((lap - start) - lapPrev);
+                cout << endl;
             }
             else
                 cout << endl;
@@ -126,13 +127,19 @@ void epoch_convertor(time_t timeX)
 
     ss = timeX % 60;
 
-    if(timeX>=60)
-        mm = timeX / 60;
-    if(timeX >= 3600)
-        hh = timeX / 3600;
     if(timeX >= 86400)
+    {
         dd = timeX / 86400;
+        timeX = timeX - (86400 * dd);
+    }
+    if (timeX >= 3600)
+    {
+        hh = timeX / 3600;
+        timeX = timeX - (3600 * hh);
+    }
+    if (timeX >= 60)
+        mm = timeX / 60;
 
-    cout << dd<<':'<<hh<<':'<<mm<<':'<<ss << endl;
+    cout << dd << ':' << hh << ':' << mm << ':' << ss;
     return;
 }
