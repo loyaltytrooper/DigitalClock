@@ -122,7 +122,7 @@ int main()
 
 void epoch_convertor(time_t timeX)
 {
-    int dd, hh, mm, ss;
+    int dd = 0, hh = 0, mm = 0, ss;
 
     ss = timeX % 60;
 
