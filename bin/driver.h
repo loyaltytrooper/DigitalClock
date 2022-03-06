@@ -33,7 +33,7 @@ menuDriver:
 }
 
 
-void digitalClock() // Name of Engineer developing this feature
+void digitalClock() 
 {
     // Please start writing your code here and please write comments so that others can understand what has been done
     // Feel free to make your own functions to support the functionality of your code
@@ -41,28 +41,43 @@ void digitalClock() // Name of Engineer developing this feature
 }
 
 
-void alarm() // Name of Engineer developing this feature
-{
-    // Please start writing your code here and please write comments so that others can understand what has been done
-    // Feel free to make your own functions to support the functionality of your code
+void alarm()
+{ 
     return;
 }
 
 
-void timer() // Name of Engineer developing this feature
+void timer() // Use previous timer setting or not?
 {
-    // Please start writing your code here and please write comments so that others can understand what has been done
-    // Feel free to make your own functions to support the functionality of your code
-    return;
+    int hh, mm, ss;
+    cout << "Please set the Timer(hh : mm :ss)\n";
+    cin >> hh >> mm >> ss;
+    CorrectTimeGiven(hh, mm, ss);
+
+    cout << "START? (y/n)" << endl;
+
+    char choice;
+    cin >> choice;
+    if(choice == 'y')
+    {
+        time_t startTime;
+        time(&startTime);
+        cout << "Current time is : " << ctime(&startTime) << endl;
+        cout << "The timer is set for  " << setfill('0') << setw(2) << hh << ':' << setw(2) << mm << ':' << setw(2) << ss << endl;
+        time_t finalTime = (startTime + (hh * 3600) + (mm * 60) + ss) << endl;
+        cout << "till " << ctime(&finalTime);
+
+        while(startTime != finalTime)
+        {
+            time(&startTime);
+        }
+        cout << "Timer Finished";
+    }
 }
 
 
-void stopwatch() // Name of Engineer developing this feature
+void stopwatch()
 {
-    // Please start writing your code here and please write comments so that others can understand
-    // what has been done
-    // Feel free to make your own functions to support the functionality of your code
-
     cout << "Press:- " << endl
          << "\t\t's' - Start the StopWatch" << endl
          << "\t\t'l' for lap" << endl
@@ -107,6 +122,7 @@ void stopwatch() // Name of Engineer developing this feature
 
         button = getch();
     }
+    
 }
 
 
@@ -135,6 +151,27 @@ void epoch_convertor(time_t timeX)
     if (timeX >= 60)
         mm = timeX / 60;
 
-    cout << dd << ':' << hh << ':' << mm << ':' << ss;
+    cout << setfill('0') << setw(2) << dd << ':' << setw(2) << hh << ':' << setw(2) << mm << ':' << setw(2) << ss;
     return;
+}
+
+void CorrectTimeGiven(int &hour, int &minute, int &second)
+{
+    if (second > 59)
+    {
+        minute = minute + (second / 60);
+        second = second % 60;
+
+        if (minute > 59)
+        {
+            hour = hour + minute / 60;
+            minute = minute % 60;
+        }
+    }
+
+    if (minute > 59)
+    {
+        hour = hour + minute / 60;
+        minute = minute % 60;
+    }
 }
