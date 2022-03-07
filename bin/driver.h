@@ -35,15 +35,104 @@ menuDriver:
 
 void digitalClock() 
 {
-    time_t start;
-    time(&start);
-    cout<<ctime(&start);
+    time_t now;
+    fstream f;
+    char countryCode[30];
+    cout << "Please enter the country code (or zone abbreviation), -1 if IST preferred" << endl;
+    cin.get();
+    cin.getline(countryCode, 30);
+
+    f.open("bin/timeZone.csv", ios :: in);
+    
+    int hour, minute;
+    string country, code, sign, timeZone;
+    while(!f.eof())
+    {
+        if(countryCode[0] == '-' && countryCode[1] == '1')
+        {
+            
+            time(&now);
+            cout<<ctime(&now);
+            break;
+        }
+
+        f >> country >> code >> sign >> timeZone;
+
+        bool check = true, checkCode = true;
+        for (int i = 0; country[i] != '\0'; i++)
+        {
+            if(country[i] != countryCode[i])
+                check = false;
+
+            if(code[i] != countryCode[i])
+                checkCode = false;
+        }
+
+        if (check == true || checkCode == true)
+        {
+            if (sign[0] == '+')
+            {
+                hour = ((timeZone[0] - '0') * 10) + (timeZone[1] - '0');
+                minute = ((timeZone[3] - '0') * 10) + (timeZone[4] - '0');
+
+                time(&now);
+                now = now + ((hour * 3600) + (minute * 60));
+                cout << endl
+                        << ctime(&now) << endl;
+                break;
+            }
+            else
+            {
+                hour = ((int)(timeZone[0] - '0') * 10) + (int)(timeZone[1] - '0');
+                minute = ((int)(timeZone[3] - '0') * 10) + (int)(timeZone[4] - '0');
+
+                time(&now);
+                now = now - ((hour * 3600) + (minute * 60));
+                cout << ctime(&now) << endl;
+                break;
+            }
+        }
+    }
+    f.close();
     return;
 }
 
 
 void alarm()
-{ 
+{
+    struct tm *alarm_date;
+    time_t now;
+    time(&now);
+    int sec, min, hour, day, month, year;
+    cout << "Current time is " << ctime(&now) << endl;
+    cout << "When to set the alarm for?" << endl;
+    cout << "Enter in order\n"
+            "Year\n"
+            "Month (1 to 12)\n"
+            "Day (1 to 31) except in Feb\n"
+            "Hours (0 to 23)\n"
+            "Minutes(0 to 59)\n"
+            "Seconds (0 to 59)\n";
+
+    cin >> year >> month >> day >> hour >> min >> sec;
+    
+    alarm_date->tm_year = year;
+    alarm_date->tm_mon = month;
+    alarm_date->tm_mday = day;
+    alarm_date->tm_hour = hour;
+    alarm_date->tm_min = min;
+    alarm_date->tm_sec = sec;
+
+    time_t alarmDate = mktime(alarm_date);
+    cout<< ctime(&alarmDate) <<endl;
+    cout << "Set the alarm!";
+
+    while(alarmDate != now)
+    {
+        time(&now);
+    }
+
+    cout << "Alarm Completed";
     return;
 }
 

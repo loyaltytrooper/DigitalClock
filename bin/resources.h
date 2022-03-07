@@ -1,7 +1,10 @@
 #include<iostream>
 #include<conio.h>
 #include<iomanip>
-#include<ctime>
+#include<cstring>
+#include<string>
+#include <ctime>
+#include <fstream>
 using namespace std;
 
 // Class for World's TimeZone 

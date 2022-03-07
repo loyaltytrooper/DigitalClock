@@ -11,7 +11,16 @@
 
 int main()
 {
-    menu();
+    char ch;
+    cout << "Press 'y' to Enter the Menu or any other key to exit" << endl;
+    cin.get(ch);
+    
+    while(ch == 'y')
+    {
+        menu();
+        cout << "Press 'y' to Enter the Menu or any other key to exit" << endl;
+        cin.get(ch);
+    }
     return 0;
 }
 
