@@ -8,19 +8,17 @@
 // functions to make the features work :
 // void epoch_convertor(time_t);
 
-
 int main()
 {
     char ch;
     cout << "Press 'y' to Enter the Menu or any other key to exit" << endl;
     cin.get(ch);
-    
+
     while(ch == 'y')
     {
         menu();
         cout << "Press 'y' to Enter the Menu or any other key to exit" << endl;
-        cin.get(ch);
+        ch = getch();
     }
     return 0;
 }
-

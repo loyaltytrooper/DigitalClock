@@ -7,11 +7,11 @@ menuDriver:
     cout << "Welcome" << endl;
     cout << endl
          << endl
-         << "\t\t\t\t\tMENU" << endl;
-    cout << "\t\t\t\t\t\t1) Clock" << endl;
-    cout << "\t\t\t\t\t\t2) Alarm" << endl;
-    cout << "\t\t\t\t\t\t3) Timer" << endl;
-    cout << "\t\t\t\t\t\t4) Stopwatch" << endl;
+         << "\t\t\t\tMENU" << endl;
+    cout << "\t\t\t\t1) Clock" << endl;
+    cout << "\t\t\t\t2) Alarm" << endl;
+    cout << "\t\t\t\t3) Timer" << endl;
+    cout << "\t\t\t\t4) Stopwatch" << endl;
     int choice = 0;
     cin >> choice;
 
@@ -38,7 +38,7 @@ void digitalClock()
     time_t now;
     fstream f;
     char countryCode[30];
-    cout << "Please enter the country code (or zone abbreviation), -1 if IST preferred" << endl;
+    cout << "Please enter the country name (or zone abbreviation), -1 if IST preferred" << endl;
     cin.get();
     cin.getline(countryCode, 30);
 
@@ -77,17 +77,18 @@ void digitalClock()
 
                 time(&now);
                 now = now + ((hour * 3600) + (minute * 60));
-                cout << endl
-                        << ctime(&now) << endl;
+                now -= ((5 * 3600) + (30 * 60));
+                cout << ctime(&now) << endl;
                 break;
             }
             else
             {
-                hour = ((int)(timeZone[0] - '0') * 10) + (int)(timeZone[1] - '0');
-                minute = ((int)(timeZone[3] - '0') * 10) + (int)(timeZone[4] - '0');
+                hour = ((timeZone[0] - '0') * 10) + (timeZone[1] - '0');
+                minute = ((timeZone[3] - '0') * 10) + (timeZone[4] - '0');
 
                 time(&now);
                 now = now - ((hour * 3600) + (minute * 60));
+                now -= ((5 * 3600) + (30 * 60));
                 cout << ctime(&now) << endl;
                 break;
             }
@@ -100,40 +101,63 @@ void digitalClock()
 
 void alarm()
 {
-    struct tm *alarm_date;
+    struct tm *timeinfo;
+    int date, hour, min, sec;
+    int alarmDay, alarmHr, alarmMin, alarmSec;
     time_t now;
+
+    printf("Enter date and time(24 Hour Format) for alarm : ");
+    scanf("%d", &date);
+
+    printf("\nhour : ");
+    scanf("%d", &hour);
+
+    printf("\nminute : ");
+    scanf("%d", &min);
+
+    printf("\nseconds : ");
+    scanf("%d", &sec);
+
     time(&now);
-    int sec, min, hour, day, month, year;
-    cout << "Current time is " << ctime(&now) << endl;
-    cout << "When to set the alarm for?" << endl;
-    cout << "Enter in order\n"
-            "Year\n"
-            "Month (1 to 12)\n"
-            "Day (1 to 31) except in Feb\n"
-            "Hours (0 to 23)\n"
-            "Minutes(0 to 59)\n"
-            "Seconds (0 to 59)\n";
+    timeinfo = localtime(&now);
 
-    cin >> year >> month >> day >> hour >> min >> sec;
+    if (sec < timeinfo->tm_sec)
+    {
+        alarmSec = 60 - timeinfo->tm_sec + sec;
+        min--;
+    }
+    else
+        alarmSec = sec - timeinfo->tm_sec;
+
+    if (min < timeinfo->tm_min)
+    {
+        alarmMin = 60 - timeinfo->tm_min + min;
+        hour--;
+    }
+    else
+        alarmMin = min - timeinfo->tm_min;
+
+    if (hour < timeinfo->tm_hour)
+    {
+        alarmHr = 24 - timeinfo->tm_hour + hour;
+        date--;
+    }
+    else
+        alarmHr = hour - timeinfo->tm_hour;
+
+    alarmDay = date - timeinfo->tm_mday;
     
-    alarm_date->tm_year = year;
-    alarm_date->tm_mon = month;
-    alarm_date->tm_mday = day;
-    alarm_date->tm_hour = hour;
-    alarm_date->tm_min = min;
-    alarm_date->tm_sec = sec;
+    int totalSec = (alarmDay * 86400) + (alarmHr * 3600) + (alarmMin * 60) + alarmSec;
 
-    time_t alarmDate = mktime(alarm_date);
-    cout<< ctime(&alarmDate) <<endl;
-    cout << "Set the alarm!";
+    time_t alarm = totalSec + now - 1;
 
-    while(alarmDate != now)
+    while (now <= alarm)
     {
         time(&now);
     }
 
-    cout << "Alarm Completed";
-    return;
+    if(now >= alarm)
+        printf("Alarm completed!");
 }
 
 
@@ -157,11 +181,11 @@ void timer() // Use previous timer setting or not?
         time_t finalTime = (startTime + (hh * 3600) + (mm * 60) + ss);
         cout << "till " << ctime(&finalTime);
 
-        while(startTime != finalTime)
+        while(startTime < finalTime)
         {
             time(&startTime);
         }
-        cout << "Timer Finished";
+        cout << "Timer Finished\n";
     }
 }
 
