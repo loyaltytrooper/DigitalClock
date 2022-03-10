@@ -221,13 +221,17 @@ void stopwatch()
     tm *accessor; // used to access the time_t type variable and
     // directly convert int or double types into respective time formats
 
+    bool checkStart = false;
     char button = getch();
     while (button) // #include<conio.h>
     {
-        if (button == 's')
+        if (button == 's' && checkStart == false)
+        {
             start = time(NULL);
+            checkStart = true;
+        }
 
-        else if (button == 'l')
+        else if (button == 'l' && checkStart == true)
         {
             lap = time(NULL);
 
@@ -249,8 +253,13 @@ void stopwatch()
             lapPrev = lap - start;
         }
 
-        else if (button == 'r')
-            break;
+        else if (button == 'l' && checkStart == true)
+        {
+            cout << "This is not how stopWatch works!\n";
+            return;
+        }
+
+        else if (button == 'r') break;
 
         else
             cout << "Wrong command given!";
