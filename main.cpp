@@ -17,6 +17,8 @@ int main()
     while(ch == 'y')
     {
         menu();
+        getch();
+        system("cls");
         cout << "Press 'y' to Enter the Menu or any other key to exit" << endl;
         ch = getch();
     }

@@ -43,22 +43,22 @@ void digitalClock()
     cin.getline(countryCode, 30);
 
     f.open("bin/timeZone.csv", ios :: in);
-    
+
+    bool check = true, checkCode = true;
     int hour, minute;
     string country, code, sign, timeZone;
     while(!f.eof())
     {
         if(countryCode[0] == '-' && countryCode[1] == '1')
         {
-            
             time(&now);
             cout<<ctime(&now);
             break;
         }
+        
 
         f >> country >> code >> sign >> timeZone;
 
-        bool check = true, checkCode = true;
         for (int i = 0; country[i] != '\0'; i++)
         {
             if(country[i] != countryCode[i])
@@ -94,6 +94,9 @@ void digitalClock()
             }
         }
     }
+    if (check == false || checkCode == false)
+        cout << "Wrong name of capital entered\n";
+
     f.close();
     return;
 }
@@ -151,6 +154,9 @@ void alarm()
 
     time_t alarm = totalSec + now - 1;
 
+    if(alarm < now)
+        cout << "Wrong input given for alarm";
+
     while (now <= alarm)
     {
         time(&now);
@@ -180,6 +186,9 @@ void timer() // Use previous timer setting or not?
         cout << "The timer is set for  " << setfill('0') << setw(2) << hh << ':' << setw(2) << mm << ':' << setw(2) << ss << endl;
         time_t finalTime = (startTime + (hh * 3600) + (mm * 60) + ss);
         cout << "till " << ctime(&finalTime);
+
+        if(finalTime < startTime)
+            cout << "Wrong alarm given";
 
         while(startTime < finalTime)
         {
