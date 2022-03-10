@@ -38,7 +38,8 @@ void digitalClock()
     time_t now;
     fstream f;
     char countryCode[30];
-    cout << "Please enter the country name (or zone abbreviation), -1 if IST preferred" << endl;
+    cout << "Please enter the country name (or zone abbreviation),"
+            " -1 if IST preferred" << endl;
     cin.get();
     cin.getline(countryCode, 30);
 
@@ -55,7 +56,8 @@ void digitalClock()
             cout<<ctime(&now);
             break;
         }
-        
+
+        check = true, checkCode = true;
 
         f >> country >> code >> sign >> timeZone;
 
@@ -94,7 +96,7 @@ void digitalClock()
             }
         }
     }
-    if (check == false || checkCode == false)
+    if (check == false && checkCode == false)
         cout << "Wrong name of capital entered\n";
 
     f.close();
@@ -150,20 +152,26 @@ void alarm()
 
     alarmDay = date - timeinfo->tm_mday;
     
-    int totalSec = (alarmDay * 86400) + (alarmHr * 3600) + (alarmMin * 60) + alarmSec;
+    int totalSec = (alarmDay * 86400) + (alarmHr * 3600) + 
+                    (alarmMin * 60) + alarmSec;
 
     time_t alarm = totalSec + now - 1;
 
     if(alarm < now)
-        cout << "Wrong input given for alarm";
+    {
+        cout << "Wrong alarm time given";
+        return;
+    }
+
+    cout << "Alarm started at" << ctime(&now);
 
     while (now <= alarm)
     {
         time(&now);
     }
 
-    if(now >= alarm)
-        printf("Alarm completed!");
+    if (now >= alarm)
+        cout << "Alarm completed at" << ctime(&now);
 }
 
 
@@ -183,12 +191,13 @@ void timer() // Use previous timer setting or not?
         time_t startTime;
         time(&startTime);
         cout << "Current time is : " << ctime(&startTime) << endl;
-        cout << "The timer is set for  " << setfill('0') << setw(2) << hh << ':' << setw(2) << mm << ':' << setw(2) << ss << endl;
+        cout << "The timer is set for  " << setfill('0') << setw(2) <<
+            hh << ':' << setw(2) << mm << ':' << setw(2) << ss << endl;
         time_t finalTime = (startTime + (hh * 3600) + (mm * 60) + ss);
         cout << "till " << ctime(&finalTime);
 
         if(finalTime < startTime)
-            cout << "Wrong alarm given";
+            cout << "Wrong time given";
 
         while(startTime < finalTime)
         {
@@ -243,6 +252,9 @@ void stopwatch()
         else if (button == 'r')
             break;
 
+        else
+            cout << "Wrong command given!";
+
         button = getch();
     }
     
@@ -274,7 +286,8 @@ void epoch_convertor(time_t timeX)
     if (timeX >= 60)
         mm = timeX / 60;
 
-    cout << setfill('0') << setw(2) << dd << ':' << setw(2) << hh << ':' << setw(2) << mm << ':' << setw(2) << ss;
+    cout << setfill('0') << setw(2) << dd << ':' << setw(2) << hh << ':'
+         << setw(2) << mm << ':' << setw(2) << ss;
     return;
 }
 
